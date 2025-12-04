@@ -1,0 +1,21 @@
+# Visual Studio cache
+.vs/
+*.ipch
+*.obj
+*.pdb
+*.log
+*.tlog
+*.db
+*.opendb
+*.VC.db
+
+# Build folders
+Debug/
+Release/
+x64/
+x86/
+
+# Backup files
+*.ilk
+*.cache
+*.tmp
