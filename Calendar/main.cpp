@@ -3,7 +3,7 @@
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
 {
-    const wchar_t CLASS_NAME[] = L"CalendarApp";
+    const wchar_t CLASS_NAME[] = L"CalendarApp - Maks Shilo";
 
     WNDCLASS wc = {};
     wc.lpfnWndProc = CalendarWindow::StaticWndProc;
@@ -16,7 +16,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nCmdShow)
     CalendarWindow* window = new CalendarWindow();
 
     HWND hwnd = CreateWindowEx(
-        0, CLASS_NAME, L"Calendar App",
+        0, CLASS_NAME, L"CalendarApp - Maks Shilo",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 900, 600,
         nullptr, nullptr, hInst, window
