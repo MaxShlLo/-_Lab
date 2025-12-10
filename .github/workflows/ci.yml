@@ -1,0 +1,36 @@
+name: CI Build and Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show author info
+        run: |
+          echo "Commit author:"
+          git log -1 --pretty=format:"%an <%ae>"
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build project
+        run: |
+          mkdir build
+          cl /EHsc main.cpp /Fe:build/CalendarApp.exe
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: auto-release-${{ github.run_number }}
+          name: Auto Release ${{ github.run_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
