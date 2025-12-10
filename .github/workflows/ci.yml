@@ -26,7 +26,8 @@ jobs:
         working-directory: ./Calendar
         run: |
           mkdir ../build
-          cl /EHsc /DUNICODE /D_UNICODE *.cpp user32.lib /Fe:../build/CalendarApp.exe
+          # Додано gdi32.lib
+          cl /EHsc /DUNICODE /D_UNICODE *.cpp user32.lib gdi32.lib /Fe:../build/CalendarApp.exe
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
