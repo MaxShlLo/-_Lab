@@ -23,9 +23,10 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Build project
+        working-directory: ./Calendar  # <-- Вказуємо, що працюємо всередині цієї папки
         run: |
-          mkdir build
-          cl /EHsc main.cpp /Fe:build/CalendarApp.exe
+          mkdir ../build               # Створюємо папку build на рівень вище (в корені)
+          cl /EHsc main.cpp /Fe:../build/CalendarApp.exe
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
