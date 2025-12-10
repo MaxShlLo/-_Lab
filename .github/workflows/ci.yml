@@ -20,7 +20,7 @@ jobs:
 
       - name: Show author info
         run: |
-          echo "Commit author:"
+          echo "Maks Shilo"
           git log -1 --pretty=format:"%an <%ae>"
 
       - name: Setup MSVC
