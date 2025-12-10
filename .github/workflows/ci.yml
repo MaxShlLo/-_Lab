@@ -1,5 +1,9 @@
 name: CI Build and Release
 
+# ДОДАЙ ЦЕЙ БЛОК ПРЯМО ТУТ:
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -34,5 +38,6 @@ jobs:
         with:
           tag_name: auto-release-${{ github.run_number }}
           name: Auto Release ${{ github.run_number }}
+          files: build/CalendarApp.exe     # <--- Додай це, щоб .exe файл прикріпився до релізу!
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
