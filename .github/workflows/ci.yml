@@ -26,7 +26,7 @@ jobs:
         working-directory: ./Calendar  # <-- Вказуємо, що працюємо всередині цієї папки
         run: |
           mkdir ../build               # Створюємо папку build на рівень вище (в корені)
-          cl /EHsc main.cpp /Fe:../build/CalendarApp.exe
+          cl /EHsc /DUNICODE /D_UNICODE Calendar/main.cpp /Fe:build/CalendarApp.exe
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
