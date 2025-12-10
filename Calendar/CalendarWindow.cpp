@@ -113,7 +113,7 @@ LRESULT CALLBACK CalendarWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
             calendar.addEvent(e);
 
             // ----------------------------------------------------
-            // (Необов'язково) Запис у файл
+            // Запис у файл
             // ----------------------------------------------------
             HANDLE file = CreateFile(L"events.txt", GENERIC_WRITE, 0, nullptr,
                 OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -122,6 +122,11 @@ LRESULT CALLBACK CalendarWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
             {
                 SetFilePointer(file, 0, nullptr, FILE_END);
 
+                // Додаємо порожній рядок перед новою подією
+                const wchar_t* separator = L"\r\n";
+                DWORD written;
+                WriteFile(file, separator, wcslen(separator) * sizeof(wchar_t), &written, nullptr);
+
                 std::wstring line =
                     L"Title: " + std::wstring(titleBuf) + L"\r\n" +
                     L"Description: " + std::wstring(descBuf) + L"\r\n" +
@@ -129,7 +134,7 @@ LRESULT CALLBACK CalendarWindow::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPA
                     L"Time: " + std::wstring(timeBuf) + L"\r\n" +
                     L"-------------\r\n";
 
-                DWORD written;
+                //DWORD written;
                 WriteFile(file, line.c_str(),
                     line.size() * sizeof(wchar_t),
                     &written, nullptr);
@@ -223,7 +228,7 @@ void CalendarWindow::Draw(HDC hdc)
         wsprintf(buf, L"%d", d);
         TextOut(hdc, x, y, buf, wcslen(buf));
 
-        // ============================
+// ============================
 // Додати підпис події (назву)
 // ============================
         if (calendar.hasEvent(d))
@@ -234,17 +239,21 @@ void CalendarWindow::Draw(HDC hdc)
             {
                 if (e.day == d && e.month == calendar.getMonth() && e.year == calendar.getYear())
                 {
-                    // беремо перші 8 символів назви
-                    std::wstring label = e.title.substr(0, 8);
-                    if (e.title.size() > 8)
+                    std::wstring cleanTitle = e.title;
+
+                    // прибираємо переводи рядків на початку
+                    while (!cleanTitle.empty() &&
+                        (cleanTitle[0] == L'\r' || cleanTitle[0] == L'\n'))
+                        cleanTitle.erase(0, 1);
+
+                    std::wstring label = cleanTitle.substr(0, 8);
+                    if (cleanTitle.size() > 8)
                         label += L"...";
 
-                    SetTextColor(hdc, RGB(0, 0, 200)); // синій для тексту
-
-                    // Малюємо текст під датою (20 px нижче)
+                    SetTextColor(hdc, RGB(0, 0, 200));
                     TextOut(hdc, x, y + 20, label.c_str(), label.size());
+                    SetTextColor(hdc, RGB(0, 0, 0));
 
-                    SetTextColor(hdc, RGB(0, 0, 0)); // повертаємо чорний
                     break;
                 }
             }
